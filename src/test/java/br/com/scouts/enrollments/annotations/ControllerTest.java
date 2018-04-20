@@ -13,10 +13,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Transactional
+
 @SpringBootTest
-@WebAppConfiguration
-@ContextConfiguration
+@Transactional
 @AutoConfigureTestDatabase
 @AutoConfigureTestEntityManager
 public  @interface ControllerTest {

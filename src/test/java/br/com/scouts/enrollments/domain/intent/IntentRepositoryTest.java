@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -24,10 +25,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
+@SpringBootTest
+@ActiveProfiles("test")
+
 //@DataJpaTest
 //@Transactional
-@SpringBootTest
-@AutoConfigureTestDatabase
+//@AutoConfigureTestDatabase
 //@AutoConfigureTestEntityManager
 public class IntentRepositoryTest {
 
@@ -39,7 +42,16 @@ public class IntentRepositoryTest {
 
 
     @Test
-    public void should_find_all() {
+    public void should_find_empty_list() {
+        Iterable<Intent> result = intentRepository.findAll();
+        Assertions.assertThat(result)
+                .isNotNull()
+                .isEmpty();
+    }
+
+
+    @Test
+    public void should_find_with_data() {
 //        testEntityManager.persist(IntentEnvironment.createJose());
 //        testEntityManager.persist(IntentEnvironment.createMaria());
 //        testEntityManager.flush();

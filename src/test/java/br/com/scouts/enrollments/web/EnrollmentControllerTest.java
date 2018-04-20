@@ -4,6 +4,7 @@ import br.com.scouts.enrollments.annotations.ControllerTest;
 import br.com.scouts.enrollments.domain.IntentEnvironment;
 import br.com.scouts.enrollments.domain.Scripts;
 import br.com.scouts.enrollments.domain.intent.Intent;
+import br.com.scouts.enrollments.domain.intent.exception.IntentNotFound;
 import br.com.scouts.enrollments.infrastructure.EmailService;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,15 +15,20 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEnti
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.transaction.Transactional;
@@ -37,12 +43,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 //@ControllerTest
 @Transactional
 @SpringBootTest
-@WebAppConfiguration
-@ContextConfiguration
 @AutoConfigureTestDatabase
 @AutoConfigureTestEntityManager
 public class EnrollmentControllerTest {
@@ -65,8 +69,17 @@ public class EnrollmentControllerTest {
                 .webAppContextSetup(wac)
                 .alwaysDo(print())
                 .apply(SecurityMockMvcConfigurers.springSecurity())
-                .alwaysExpect(content().contentType("application/json;charset=UTF-8"))
                 .build();
+    }
+
+    @Test
+    @Sql({Scripts.INTENTS, Scripts.ENROLLMENT})
+    public void should_get_all() throws Exception {
+        this.mockMvc.perform(
+                get("/enrollments")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
@@ -82,8 +95,6 @@ public class EnrollmentControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                                 .param("intent", maria.getId().toString())
                                 .with(csrf())
-                            .with(user("teste").roles("CREATE_ENROLLMENT"))
-
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -96,20 +107,11 @@ public class EnrollmentControllerTest {
     public void should_not_create_if_not_exists() throws Exception {
         this.mockMvc.perform(
                 post("/enrollments")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content("{}")
-                        .accept(MediaType.APPLICATION_JSON_UTF8)
-                        .with(csrf())
-                        .param("intent", UUID.randomUUID().toString()))
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .param("intent", UUID.randomUUID().toString())
+                        .with(csrf()))
                 .andExpect(status().isNotFound());
     }
 
-    @Test
-    @Sql({Scripts.INTENTS, Scripts.ENROLLMENT})
-    @WithMockUser(roles = "BLA")
-    public void should_get_all() throws Exception {
-        this.mockMvc.perform(get("/enrollments"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)));
-    }
 }

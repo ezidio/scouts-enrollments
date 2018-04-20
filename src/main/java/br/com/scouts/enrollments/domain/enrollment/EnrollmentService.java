@@ -2,6 +2,7 @@ package br.com.scouts.enrollments.domain.enrollment;
 
 import br.com.scouts.enrollments.domain.intent.Intent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 @Service
