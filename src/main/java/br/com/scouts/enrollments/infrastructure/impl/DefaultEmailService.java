@@ -1,6 +1,6 @@
 package br.com.scouts.enrollments.infrastructure.impl;
 
-import com.example.demo.infrastructure.EmailService;
+import br.com.scouts.enrollments.infrastructure.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;

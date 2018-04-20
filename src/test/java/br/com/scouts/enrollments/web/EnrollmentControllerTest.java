@@ -1,11 +1,10 @@
 package br.com.scouts.enrollments.web;
 
+import br.com.scouts.enrollments.annotations.ControllerTest;
+import br.com.scouts.enrollments.domain.IntentEnvironment;
+import br.com.scouts.enrollments.domain.Scripts;
 import br.com.scouts.enrollments.domain.intent.Intent;
-import com.example.demo.domain.IntentEnvironment;
-import com.example.demo.domain.Scripts;
-import com.example.demo.domain.intent.Intent;
-import com.example.demo.infrastructure.EmailService;
-import com.example.demo.web.EnrollmentController;
+import br.com.scouts.enrollments.infrastructure.EmailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +15,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -30,6 +31,7 @@ import java.util.UUID;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -62,7 +64,7 @@ public class EnrollmentControllerTest {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(wac)
                 .alwaysDo(print())
-//                .apply(SecurityMockMvcConfigurers.springSecurity())
+                .apply(SecurityMockMvcConfigurers.springSecurity())
                 .alwaysExpect(content().contentType("application/json;charset=UTF-8"))
                 .build();
     }
@@ -79,8 +81,8 @@ public class EnrollmentControllerTest {
                                 .content("{}")
                                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                                 .param("intent", maria.getId().toString())
-//                        .with(csrf())
-//                        .with(user("teste").roles("CREATE_ENROLLMENT"))
+                                .with(csrf())
+                            .with(user("teste").roles("CREATE_ENROLLMENT"))
 
                 )
                 .andDo(print())
@@ -104,7 +106,7 @@ public class EnrollmentControllerTest {
 
     @Test
     @Sql({Scripts.INTENTS, Scripts.ENROLLMENT})
-//    @WithMockUser
+    @WithMockUser(roles = "BLA")
     public void should_get_all() throws Exception {
         this.mockMvc.perform(get("/enrollments"))
                 .andExpect(status().isOk())

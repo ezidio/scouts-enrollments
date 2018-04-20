@@ -1,7 +1,6 @@
 package br.com.scouts.enrollments.domain;
 
 import br.com.scouts.enrollments.domain.intent.Intent;
-import com.example.demo.domain.intent.Intent;
 
 import java.time.LocalDate;
 import java.time.Month;

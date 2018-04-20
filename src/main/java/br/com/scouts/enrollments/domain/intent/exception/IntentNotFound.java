@@ -1,7 +1,6 @@
 package br.com.scouts.enrollments.domain.intent.exception;
 
 import br.com.scouts.enrollments.domain.intent.IntentId;
-import com.example.demo.domain.intent.IntentId;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

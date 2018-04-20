@@ -1,16 +1,11 @@
 package br.com.scouts.enrollments.web;
 
+import br.com.scouts.enrollments.domain.enrollment.Enrollment;
+import br.com.scouts.enrollments.domain.enrollment.EnrollmentService;
 import br.com.scouts.enrollments.domain.intent.IntentId;
 import br.com.scouts.enrollments.domain.intent.IntentRepository;
 import br.com.scouts.enrollments.domain.intent.exception.IntentNotFound;
-import com.example.demo.domain.enrollment.Enrollment;
-import com.example.demo.domain.enrollment.EnrollmentId;
-import com.example.demo.domain.enrollment.EnrollmentService;
-import com.example.demo.domain.intent.IntentId;
-import com.example.demo.domain.intent.IntentRepository;
-import com.example.demo.domain.intent.exception.IntentNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

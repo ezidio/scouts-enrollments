@@ -1,5 +1,6 @@
 package br.com.scouts.enrollments.infrastructure.impl;
 
+import br.com.scouts.enrollments.annotations.MailConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -10,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,9 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@AutoConfigureTestDatabase
-//@MailConfiguration
-//@TestPropertySource("classpath:application.test.properties")
+//@SpringBootTest(properties = "application.mail.from=opa@teste.com")
+//@ActiveProfiles("test")
+//@TestPropertySource("classpath:application-test.properties")
+//@MailConfiguration(replyTo = "reply_to@tdc.com.br")
 public class DefaultEmailServiceTest {
 
 
@@ -45,7 +49,7 @@ public class DefaultEmailServiceTest {
         assertThat(message.getText()).isEqualTo(MESSAGE);
         assertThat(message.getSubject()).isEqualTo(SUBJECT);
         assertThat(message.getTo()).contains(EMAIL_TO);
-        assertThat(message.getReplyTo()).isEqualTo("test.reply_to@teste.com");
-        assertThat(message.getFrom()).isEqualTo("test.from@teste.com");
+        assertThat(message.getReplyTo()).isEqualTo("reply_to@teste.com");
+        assertThat(message.getFrom()).isEqualTo("from@teste.com");
     }
 }

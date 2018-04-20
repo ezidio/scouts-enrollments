@@ -1,7 +1,6 @@
 package br.com.scouts.enrollments.domain.enrollment;
 
 import br.com.scouts.enrollments.domain.intent.Intent;
-import com.example.demo.domain.intent.Intent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

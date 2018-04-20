@@ -1,6 +1,6 @@
 package br.com.scouts.enrollments.domain.intent;
 
-import com.example.demo.infrastructure.Identifier;
+import br.com.scouts.enrollments.infrastructure.Identifier;
 
 import javax.persistence.Embeddable;
 import java.util.UUID;

@@ -1,26 +1,27 @@
 package br.com.scouts.enrollments.domain.intent;
 
-import com.example.demo.domain.Scripts;
-import com.example.demo.domain.intent.Intent;
-import com.example.demo.domain.intent.IntentRepository;
+import br.com.scouts.enrollments.domain.IntentEnvironment;
+import br.com.scouts.enrollments.domain.Scripts;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 //@DataJpaTest
